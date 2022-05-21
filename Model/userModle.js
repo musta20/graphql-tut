@@ -13,7 +13,9 @@ const schema = new mongoose.Schema({
         type:String,
         min:55,
         max:255,
-        required:true
+        required:true,
+        unique: true 
+
     },
     password:{
         type:String,
@@ -26,12 +28,21 @@ const schema = new mongoose.Schema({
 const UserModel = mongoose.model('User',schema);
 
 module.exports ={
+    user: async()=>{
+       const data = await UserModel.find()
+       
+       return data.map(doc=>{return {
+        name : doc.name,
+        email : doc.email
+    }})
+        
+    },
 
-    createUser : async({ name , email , password })=>{
+    createUser : async({  userInput })=>{
 
-        await new UserModel({ name , email , password }).save();
+        await new UserModel({ name:userInput.name , email:userInput.email , password:userInput.password }).save();
 
-        return { name , email }
+        return { name:userInput.name , email : userInput.email}
 
     },
 
