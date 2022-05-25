@@ -48,7 +48,7 @@ module.exports ={
 
     deleteUser : async(ID)=>{
         await UserModel.findByIdAndRemove(ID);
-        return { ID }
+        return { done:true }
 
     },
    

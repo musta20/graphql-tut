@@ -13,18 +13,22 @@ input PostInput {
     post:String!
 }
 
+type Status {
+    done: Boolean!
+}
 
 `
-postQuery  =    `
+postQuery  =  `
 posts: [Post!]!
+
 `
 postMutation = `
 
 createPost(postInput:PostInput): Post
 
-deletePost(postId: ID!): Post
+deletePost(postId: ID!): Status!
 
-updatePost(postInput:PostInput): Post
+updatePost(postId: ID!,postInput:PostInput): Post
 
 `
 

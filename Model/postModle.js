@@ -20,26 +20,39 @@ const schema = new mongoose.Schema({
 const PostModel = mongoose.model('post',schema);
 
 module.exports ={
+    posts: async()=>{
+        const data = await PostModel.find()
+        
+        return data.map(doc=>{return {
+            _id : doc.id,
+            title : doc.title,
+            post : doc.post
+     }})
+         
+     },
 
-    createPost : async({ title , post })=>{
+    createPost : async({ postInput })=>{
+        console.log(postInput)
 
-        await new PostModel({ title , post }).save();
+        await new PostModel({ title:postInput.title , post:postInput.post }).save();
 
-        return { title , post }
+        return { title:postInput.title , post:postInput.post }
 
     },
 
-    deletePost : async(ID)=>{
-        await PostModel.findByIdAndRemove(ID);
-        return { ID }
+    deletePost : async({postId})=>{
+
+        await PostModel.findByIdAndRemove(postId);
+      
+        return {done:true}
 
     },
    
-    updatePost : async({ ID , title , post })=>{
+    updatePost : async({ postId,postInput })=>{
 
-        await PostModel.findByIdAndUpdate(ID,{ ID , title , post });
+        await PostModel.findByIdAndUpdate(postId,{ title:postInput.title , post:postInput.post });
 
-        return { ID , title , post }
+        return {  title:postInput.title , post:postInput.post }
 
     }
 
